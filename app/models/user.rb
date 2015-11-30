@@ -2,11 +2,17 @@ class User < ActiveRecord::Base
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save   :downcase_email
   before_create :create_activation_digest
-  validates :name,  presence: true, length: { maximum: 50 }
+  validates :lastname,  presence: true, length: { maximum: 50 }
+  validates :firstname,  presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
+  VALID_PHONE_REGEX = /\A\d\d\d\-\d\d\d\-\d\d\d\d\z/
+  validates :emergencyphone, presence: true, 
+                    format: { with: VALID_PHONE_REGEX,
+                              message: "must be in the format XXX-XXX-XXXX"}
+  validates :age, presence: true, numericality: { only_integer: true }
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
